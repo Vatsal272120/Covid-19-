@@ -10,46 +10,17 @@ import {
 import "./App.css";
 
 function App() {
-  const [countries, setCountries] = useState([]);
-  const [countryInfo, setcountryInfo] = useState({});
-
-  useEffect(() => {
-    fetch("https://disease.sh/v3/covid-19/all")
-      .then((response) => response.json())
-      .then((data) => {
-        setcountryInfo(data);
-      });
-  }, []);
-
-  useEffect(() => {
-    const getCountriesData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/countries")
-        .then((data) => data.json())
-        .then((info) => {
-          const countries = info.map((country) => ({
-            name: country.country,
-            value: country.countryInfo.iso2,
-          }));
-          setCountries(countries);
-        });
-    };
-
-    getCountriesData();
-  }, []);
-
-  console.log(` the country info:`, countryInfo);
+  //gets the list of all the countries and data for worldwide cases
+  const [countries, setcountries] = useState([]);
 
   return (
     <div className='app'>
       <div className='app__header'>
         {" "}
         <h1>Covid-19 Tracker</h1>
-        <FormControl classname='app__dropdown'>
-          <Select variant='outlined' value='abs'>
-            <MenuItem value='worldwide'>WorldWide</MenuItem>
-            {countries.map((country) => (
-              <MenuItem value={country.value}>{country.name}</MenuItem>
-            ))}
+        <FormControl>
+          <Select variant='outlined'>
+            <MenuItem value='worlwide'>All</MenuItem>
           </Select>
         </FormControl>
       </div>
