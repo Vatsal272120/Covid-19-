@@ -10,22 +10,26 @@ import {
 import "./App.css";
 
 function App() {
-  //gets the list of all the countries
+  // country list
   const [countries, setcountries] = useState([]);
-  // selected country from user
-  const [country, setInputCountry] = useState("worldwide");
-  // data from all countries
-  const [countryInfo, setCountryInfo] = useState({});
 
-  // get all country info
+  // useSelection
+  const [selectedCountry, setselectedCountry] = useState("worldwide");
+
+  // data from the countries
+  const [countryData, setcountryData] = useState({});
+
+  // gets all worldwide data
+
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
-      .then((reponse) => reponse.json())
-      .then((data) => setCountryInfo(data));
+      .then((response) => response.json())
+      .then((data) => setcountryData(data));
   }, []);
 
+  // get country list
   useEffect(() => {
-    const getCountryData = async () => {
+    const getCountrylist = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
         .then((response) => response.json())
         .then((data) => {
@@ -37,24 +41,27 @@ function App() {
           setcountries(countries);
         });
     };
-    getCountryData();
+
+    getCountrylist();
   }, []);
 
-  const onCountryChange = async (e) => {
+  // gets data for the user selected country - when the user selects the country, remove the previos selection from the countrydata and populate it with new one.
+
+  const getCountryData = async (e) => {
     const countryCode = e.target.value;
 
     const url =
       countryCode === "worldwide"
         ? "https://disease.sh/v3/covid-19/all"
-        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}?strict=true`;
+
     await fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setInputCountry(countryCode);
-        setCountryInfo(data);
+        setselectedCountry(countryCode);
+        setcountryData(data);
       });
   };
-  //console.log(countryInfo);
 
   return (
     <div className='app'>
@@ -62,7 +69,10 @@ function App() {
         {" "}
         <h1>Covid-19 Tracker</h1>
         <FormControl className='app__dropdown'>
-          <Select variant='outlined' value={country} onChange={onCountryChange}>
+          <Select
+            variant='outlined'
+            value={selectedCountry}
+            onChange={getCountryData}>
             <MenuItem value='worldwide'>Worldwide</MenuItem>
             {countries.map((country) => (
               <MenuItem value={country.value}>{country.name}</MenuItem>
