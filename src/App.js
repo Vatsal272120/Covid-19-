@@ -14,6 +14,8 @@ import Infobox from "./Components/Infobox";
 import numeral from "numeral";
 import "leaflet/dist/leaflet.css";
 import Map from "./Components/Map";
+import Table from "./Components/Table";
+import { prettyPrintStat, sortData } from "./Components/Util";
 
 function App() {
   // country list
@@ -27,6 +29,9 @@ function App() {
 
   // cases type
   const [casesType, setCasesType] = useState("cases");
+
+  //table data
+  const [tableData, settableData] = useState([]);
 
   // gets all worldwide data
 
@@ -46,6 +51,10 @@ function App() {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
+
+          let sortedData = sortData(data);
+
+          settableData(sortedData);
 
           setcountries(countries);
         });
@@ -73,6 +82,8 @@ function App() {
   };
 
   console.log("country Info", countryData);
+
+  console.log("table data", tableData);
   return (
     <div className='app'>
       <div className='app__left'>
@@ -96,21 +107,21 @@ function App() {
           <Infobox
             onClick={(e) => setCasesType("cases")}
             title='Active Cases'
-            cases={countryData.active}
-            total={countryData.cases}
+            cases={prettyPrintStat(countryData.active)}
+            total={numeral(countryData.cases).format("0.0a")}
           />
           <Infobox
             onClick={(e) => setCasesType("recovered")}
             title='Recovered Cases'
-            total={countryData.recovered}
-            cases={countryData.todayRecovered}
+            total={numeral(countryData.recovered).format("0.0a")}
+            cases={prettyPrintStat(countryData.todayRecovered)}
           />
 
           <Infobox
             onClick={(e) => setCasesType("deaths")}
             title='Deaths'
-            total={countryData.deaths}
-            cases={countryData.todayDeaths}
+            total={numeral(countryData.deaths).format("0.0a")}
+            cases={prettyPrintStat(countryData.todayDeaths)}
           />
         </div>
         <Map />
@@ -119,6 +130,7 @@ function App() {
       <Card className='app__right'>
         <CardContent>
           <h3>Live cases by country</h3>
+          <Table countries={tableData} />
 
           <h3>Worldwide new Cases</h3>
         </CardContent>
