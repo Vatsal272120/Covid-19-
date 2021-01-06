@@ -26,3 +26,25 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+active: 23407296
+activePerOneMillion: 3001.63
+affectedCountries: 220
+cases: 86950333
+casesPerOneMillion: 11155
+critical: 108125
+criticalPerOneMillion: 13.87
+deaths: 1878507
+deathsPerOneMillion: 241
+oneCasePerPeople: 0
+oneDeathPerPeople: 0
+oneTestPerPeople: 0
+population: 7798195012
+recovered: 61664530
+recoveredPerOneMillion: 7907.54
+tests: 1257510515
+testsPerOneMillion: 161256.61
+todayCases: 129593
+todayDeaths: 3298
+todayRecovered: 129306
+updated: 1609932764729

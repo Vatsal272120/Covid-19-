@@ -9,6 +9,11 @@ import {
 } from "@material-ui/core";
 import "./App.css";
 
+import Infobox from "./Components/Infobox";
+
+import numeral from "numeral";
+import "leaflet/dist/leaflet.css";
+
 function App() {
   // country list
   const [countries, setcountries] = useState([]);
@@ -18,6 +23,9 @@ function App() {
 
   // data from the countries
   const [countryData, setcountryData] = useState({});
+
+  // cases type
+  const [casesType, setCasesType] = useState("cases");
 
   // gets all worldwide data
 
@@ -63,6 +71,7 @@ function App() {
       });
   };
 
+  console.log("country Info", countryData);
   return (
     <div className='app'>
       <div className='app__header'>
@@ -81,7 +90,27 @@ function App() {
         </FormControl>
       </div>
 
-      <div className='app__stats'></div>
+      <div className='app__stats'>
+        <Infobox
+          onClick={(e) => setCasesType("cases")}
+          title='Active Cases'
+          cases={countryData.active}
+          total={countryData.cases}
+        />
+        <Infobox
+          onClick={(e) => setCasesType("recovered")}
+          title='Recovered Cases'
+          total={countryData.recovered}
+          cases={countryData.todayRecovered}
+        />
+
+        <Infobox
+          onClick={(e) => setCasesType("deaths")}
+          title='Deaths'
+          total={countryData.deaths}
+          cases={countryData.todayDeaths}
+        />
+      </div>
     </div>
   );
 }
