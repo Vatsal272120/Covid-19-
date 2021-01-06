@@ -13,6 +13,7 @@ import Infobox from "./Components/Infobox";
 
 import numeral from "numeral";
 import "leaflet/dist/leaflet.css";
+import Map from "./Components/Map";
 
 function App() {
   // country list
@@ -74,43 +75,54 @@ function App() {
   console.log("country Info", countryData);
   return (
     <div className='app'>
-      <div className='app__header'>
-        {" "}
-        <h1>Covid-19 Tracker</h1>
-        <FormControl className='app__dropdown'>
-          <Select
-            variant='outlined'
-            value={selectedCountry}
-            onChange={getCountryData}>
-            <MenuItem value='worldwide'>Worldwide</MenuItem>
-            {countries.map((country) => (
-              <MenuItem value={country.value}>{country.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <div className='app__left'>
+        <div className='app__header'>
+          {" "}
+          <h1>Covid-19 Tracker</h1>
+          <FormControl className='app__dropdown'>
+            <Select
+              variant='outlined'
+              value={selectedCountry}
+              onChange={getCountryData}>
+              <MenuItem value='worldwide'>Worldwide</MenuItem>
+              {countries.map((country) => (
+                <MenuItem value={country.value}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className='app__stats'>
+          <Infobox
+            onClick={(e) => setCasesType("cases")}
+            title='Active Cases'
+            cases={countryData.active}
+            total={countryData.cases}
+          />
+          <Infobox
+            onClick={(e) => setCasesType("recovered")}
+            title='Recovered Cases'
+            total={countryData.recovered}
+            cases={countryData.todayRecovered}
+          />
+
+          <Infobox
+            onClick={(e) => setCasesType("deaths")}
+            title='Deaths'
+            total={countryData.deaths}
+            cases={countryData.todayDeaths}
+          />
+        </div>
+        <Map />
       </div>
 
-      <div className='app__stats'>
-        <Infobox
-          onClick={(e) => setCasesType("cases")}
-          title='Active Cases'
-          cases={countryData.active}
-          total={countryData.cases}
-        />
-        <Infobox
-          onClick={(e) => setCasesType("recovered")}
-          title='Recovered Cases'
-          total={countryData.recovered}
-          cases={countryData.todayRecovered}
-        />
+      <Card className='app__right'>
+        <CardContent>
+          <h3>Live cases by country</h3>
 
-        <Infobox
-          onClick={(e) => setCasesType("deaths")}
-          title='Deaths'
-          total={countryData.deaths}
-          cases={countryData.todayDeaths}
-        />
-      </div>
+          <h3>Worldwide new Cases</h3>
+        </CardContent>
+      </Card>
     </div>
   );
 }
